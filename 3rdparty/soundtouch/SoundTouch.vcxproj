@@ -35,23 +35,18 @@
   <PropertyGroup Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <PlatformToolset>$(DefaultPlatformToolset)_xp</PlatformToolset>
-    <UseDebugLibraries Condition="'$(Configuration)'=='Debug'">true</UseDebugLibraries>
-    <UseDebugLibraries Condition="'$(Configuration)'!='Debug'">false</UseDebugLibraries>
-    <WholeProgramOptimization Condition="'$(Configuration)'=='Release'">true</WholeProgramOptimization>
+    <UseDebugLibraries Condition="'$(Configuration.Contains(Debug))'">true</UseDebugLibraries>
+    <UseDebugLibraries Condition="'$(Configuration.Contains(Devel))' or '$(Configuration.Contains(Release))'">false</UseDebugLibraries>
+    <WholeProgramOptimization Condition="'$(Configuration.Contains(Release))'">true</WholeProgramOptimization>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\DefaultProjectRootDir.props" />
-    <Import Project="..\3rdparty.props" />
-    <Import Condition="'$(Configuration)'!='Release'" Project="..\..\common\vsprops\IncrementalLinking.props" />
-    <Import Condition="'$(Configuration)'=='Debug'" Project="..\..\common\vsprops\CodeGen_Debug.props" />
-    <Import Condition="'$(Configuration)'=='Devel'" Project="..\..\common\vsprops\CodeGen_Devel.props" />
-    <Import Condition="'$(Configuration)'=='Release'" Project="..\..\common\vsprops\CodeGen_Release.props" />
+    <Import Project="$(SolutionDir)common\vsprops\Base.props" />
   </ImportGroup>
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>$(ProjectDir)soundtouch;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SRC_SOUNDTOUCH)\soundtouch;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>

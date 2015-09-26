@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!-- Macros -->
+  <PropertyGroup Label="UserMacros">
+    <CPUInstSetSuffix Condition="'$(Configuration.Contains(AVX))'">-AVX</CPUInstSetSuffix>
+    <CPUInstSetSuffix Condition="'$(Configuration.Contains(AVX2))'">-AVX2</CPUInstSetSuffix>
+    <CPUInstSetSuffix Condition="'$(Configuration.Contains(SSE2))'">-SSE2</CPUInstSetSuffix>
+    <CPUInstSetSuffix Condition="'$(Configuration.Contains(SSE4))'">-SSE4</CPUInstSetSuffix>
+    <CPUInstSetSuffix Condition="'$(Configuration.Contains(SSSE3))'">-SSSE3</CPUInstSetSuffix>
+    <ConfigurationSuffix Condition="'$(Configuration.Contains(Debug))'">-deb</ConfigurationSuffix>
+    <ConfigurationSuffix Condition="'$(Configuration.Contains(Devel))'">-dev</ConfigurationSuffix>
+    <PCSX2RootDir>$(SolutionDir)</PCSX2RootDir>
+    <PCSX23rdpartyDir>$(PCSX2RootDir)3rdparty\</PCSX23rdpartyDir>
+    <PCSX2BinDir>$(PCSX2RootDir)bin\</PCSX2BinDir>
+    <PCSX2CommonDir>$(PCSX2RootDir)common\</PCSX2CommonDir>
+    <PCSX2DepDir>$(PCSX2RootDir)deps\$(Platform)\$(Configuration)\</PCSX2DepDir>
+    <PCSX2PluginsDir>$(PCSX2BinDir)plugins\</PCSX2PluginsDir>
+    <PCSX2PropsDir>$(PCSX2RootDir)common\vsprops\</PCSX2PropsDir>
+    <SRC_BZIP>$(PCSX23rdpartyDir)bzip2</SRC_BZIP>
+    <SRC_JPEG>$(PCSX23rdpartyDir)libjpeg</SRC_JPEG>
+    <SRC_OPENCL>$(PCSX23rdpartyDir)opencl</SRC_OPENCL>
+    <SRC_PNG>$(PCSX23rdpartyDir)libpng</SRC_PNG>
+    <SRC_PCSX2>$(PCSX2RootDir)pcsx2</SRC_PCSX2>
+    <SRC_PORTAUDIO>$(PCSX23rdpartyDir)portaudio</SRC_PORTAUDIO>
+    <SRC_PTHREADS>$(PCSX23rdpartyDir)pthreads4w</SRC_PTHREADS>
+    <SRC_SOUNDTOUCH>$(PCSX23rdpartyDir)soundtouch</SRC_SOUNDTOUCH>
+    <SRC_WX>$(PCSX23rdpartyDir)wxwidgets3.0</SRC_WX>
+    <SRC_ZLIB>$(PCSX23rdpartyDir)zlib</SRC_ZLIB>
+  </PropertyGroup>
+  <!-- PropertyGroup All -->
+  <PropertyGroup>
+    <IntDir>$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration.Contains(Debug))' or '$(Configuration.Contains(Devel))'">true</LinkIncremental>
+    <LinkIncremental Condition="'$(Configuration.Contains(Release))'">false</LinkIncremental>
+    <OutDir>$(PCSX2DepDir)</OutDir>
+    <OutDir Condition="'$(ConfigurationType)'=='Application'">$(PCSX2BinDir)</OutDir>
+    <OutDir Condition="'$(ConfigurationType)'=='DynamicLibrary'">$(PCSX2PluginsDir)</OutDir>
+    <TargetName>$(ProjectName)-$(PlatformArchitecture)$(CPUInstSetSuffix)$(ConfigurationSuffix)</TargetName>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <!-- ClCompile All -->
+    <ClCompile>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PreprocessorDefinitions>__WIN32__;WIN32;_WINDOWS;_CRT_SECURE_NO_WARNINGS;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <StructMemberAlignment>16Bytes</StructMemberAlignment>
+      <StringPooling>true</StringPooling>
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <!-- ClCompile Debug or Devel -->
+    <ClCompile Condition="'$(Configuration.Contains(Debug))' or '$(Configuration.Contains(Devel))'">
+      <MinimalRebuild>true</MinimalRebuild>
+      <MultiProcessorCompilation>false</MultiProcessorCompilation>
+      <PreprocessorDefinitions>PCSX2_DEVBUILD;_SECURE_SCL_=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+    </ClCompile>
+    <!-- ClCompile Debug -->
+    <ClCompile Condition="'$(Configuration.Contains(Debug))'">
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>PCSX2_DEBUG;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+    </ClCompile>
+    <!-- ClCompile Devel or Release -->
+    <ClCompile Condition="'$(Configuration.Contains(Devel))' or '$(Configuration.Contains(Release))'">
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <Optimization>MaxSpeed</Optimization>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+    </ClCompile>
+    <!-- ClCompile Devel -->
+    <ClCompile Condition="'$(Configuration.Contains(Devel))'">
+      <PreprocessorDefinitions>PCSX2_DEVEL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <!-- ClCompile Release -->
+    <ClCompile Condition="'$(Configuration.Contains(Release))'">
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <OmitFramePointers>true</OmitFramePointers>
+      <PreprocessorDefinitions>_SECURE_SCL_=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
+    </ClCompile>
+    <!-- Lib All -->
+    <Lib>
+      <TargetMachine Condition="'$(Platform)'=='Win32'">MachineX86</TargetMachine>
+      <TargetMachine Condition="'$(Platform)'=='x64'">MachineX64</TargetMachine>
+    </Lib>
+    <!-- Link All -->
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+    </Link>
+    <!-- Link Debug or Devel -->
+    <Link Condition="'$(Configuration.Contains(Debug))' or '$(Configuration.Contains(Devel))'">
+      <OptimizeReferences>false</OptimizeReferences>
+      <EnableCOMDATFolding>false</EnableCOMDATFolding>
+    </Link>
+    <!-- Link Release -->
+    <Link Condition="'$(Configuration.Contains(Release))'">
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
+    </Link>
+  </ItemDefinitionGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="IndividualProjects.props" />
+  </ImportGroup>
+</Project>

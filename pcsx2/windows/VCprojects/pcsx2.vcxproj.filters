@@ -1313,7 +1313,7 @@
     <ResourceCompile Include="..\wxResources.rc">
       <Filter>AppHost\Resources</Filter>
     </ResourceCompile>
-    <ResourceCompile Include="..\..\..\3rdparty\wxwidgets3.0\include\wx\msw\wx.rc">
+    <ResourceCompile Include="$(SRC_WX)\include\wx\msw\wx.rc">
       <Filter>AppHost\Resources</Filter>
     </ResourceCompile>
   </ItemGroup>

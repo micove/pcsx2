@@ -35,27 +35,22 @@
   <PropertyGroup Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <PlatformToolset>$(DefaultPlatformToolset)_xp</PlatformToolset>
-    <UseDebugLibraries Condition="'$(Configuration)'=='Debug'">true</UseDebugLibraries>
-    <UseDebugLibraries Condition="'$(Configuration)'!='Debug'">false</UseDebugLibraries>
-    <WholeProgramOptimization Condition="'$(Configuration)'=='Release'">true</WholeProgramOptimization>
+    <UseDebugLibraries Condition="'$(Configuration.Contains(Debug))'">true</UseDebugLibraries>
+    <UseDebugLibraries Condition="'$(Configuration.Contains(Devel))' or '$(Configuration.Contains(Release))'">false</UseDebugLibraries>
+    <WholeProgramOptimization Condition="'$(Configuration.Contains(Release))'">true</WholeProgramOptimization>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\..\DefaultProjectRootDir.props" />
-    <Import Project="..\..\3rdparty.props" />
-    <Import Project="..\..\..\common\vsprops\pthreads.props" />
-    <Import Condition="'$(Configuration)'!='Release'" Project="..\..\..\common\vsprops\IncrementalLinking.props" />
-    <Import Condition="'$(Configuration)'=='Debug'" Project="..\..\..\common\vsprops\CodeGen_Debug.props" />
-    <Import Condition="'$(Configuration)'=='Devel'" Project="..\..\..\common\vsprops\CodeGen_Devel.props" />
-    <Import Condition="'$(Configuration)'=='Release'" Project="..\..\..\common\vsprops\CodeGen_Release.props" />
+    <Import Project="$(SolutionDir)common\vsprops\Base.props" />
+    <Import Project="$(SolutionDir)common\vsprops\pthreads.props" />
   </ImportGroup>
   <ItemDefinitionGroup>
     <ClCompile>
       <PreprocessorDefinitions>HAVE_PTW32_CONFIG_H;PTW32_BUILD_INLINED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <ResourceCompile>
-      <AdditionalIncludeDirectories>..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SRC_PTHREADS)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>PTW32_RC_MSC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Platform)'=='Win32'">PTW32_ARCHx86;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Platform)'=='x64'">PTW32_ARCHx64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -74,7 +69,9 @@
     <ClInclude Include="..\need_errno.h" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="..\version.rc" />
+    <ResourceCompile Include="..\version.rc">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ResourceCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
 </Project>

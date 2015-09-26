@@ -27,33 +27,50 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{01F4CE10-2CFB-41A8-B41F-E54337868A1D}</ProjectGuid>
-    <ProjectName>wxConfig30</ProjectName>
-    <RootNamespace>wxConfig30</RootNamespace>
+    <ProjectGuid>{D6973076-9317-4EF2-A0B8-B7A18AC0713E}</ProjectGuid>
+    <ProjectName>libpng</ProjectName>
+    <RootNamespace>libpng</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Label="Configuration">
     <CharacterSet>Unicode</CharacterSet>
-    <ConfigurationType>Utility</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <PlatformToolset>$(DefaultPlatformToolset)_xp</PlatformToolset>
+    <UseDebugLibraries Condition="'$(Configuration.Contains(Debug))'">true</UseDebugLibraries>
+    <UseDebugLibraries Condition="'$(Configuration.Contains(Devel))' or '$(Configuration.Contains(Release))'">false</UseDebugLibraries>
+    <WholeProgramOptimization Condition="'$(Configuration.Contains(Release))'">true</WholeProgramOptimization>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(SolutionDir)common\vsprops\Base.props" />
   </ImportGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(SRC_ZLIB);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
   <ItemGroup>
-    <CustomBuild Include="..\..\include\wx\msw\setup.h">
-      <Message>Creating ..\..\include\wx\setup.h</Message>
-      <Command>copy "%(Identity)" "..\..\include\wx\setup.h"</Command>
-      <Outputs>..\..\include\wx\setup.h;%(Outputs)</Outputs>
-    </CustomBuild>
-    <CustomBuild Include="..\..\include\wx\msw\genrcdefs.h">
-      <Message>Creating ..\..\$(PlatformName)\wx\msw\rcdefs.h</Message>
-      <Command>cl /EP /nologo "%(Identity)" &gt; "..\..\$(PlatformName)\wx\msw\rcdefs.h"</Command>
-      <Outputs>..\..\$(PlatformName)\wx\msw\rcdefs.h;%(Outputs)</Outputs>
-      <AdditionalInputs>..\..\$(PlatformName)\wx\msw;%(AdditionalInputs)</AdditionalInputs>
-    </CustomBuild>
+    <ClCompile Include="png.c" />
+    <ClCompile Include="pngerror.c" />
+    <ClCompile Include="pngget.c" />
+    <ClCompile Include="pngmem.c" />
+    <ClCompile Include="pngpread.c" />
+    <ClCompile Include="pngread.c" />
+    <ClCompile Include="pngrio.c" />
+    <ClCompile Include="pngrtran.c" />
+    <ClCompile Include="pngrutil.c" />
+    <ClCompile Include="pngset.c" />
+    <ClCompile Include="pngtrans.c" />
+    <ClCompile Include="pngwio.c" />
+    <ClCompile Include="pngwrite.c" />
+    <ClCompile Include="pngwtran.c" />
+    <ClCompile Include="pngwutil.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\zlib\zlib.vcxproj">
+      <Project>{2f6c0388-20cb-4242-9f6c-a6ebb6a83f47}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
 </Project>

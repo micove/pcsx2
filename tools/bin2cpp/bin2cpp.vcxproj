@@ -27,33 +27,34 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{01F4CE10-2CFB-41A8-B41F-E54337868A1D}</ProjectGuid>
-    <ProjectName>wxConfig30</ProjectName>
-    <RootNamespace>wxConfig30</RootNamespace>
+    <ProjectGuid>{677B7D11-D5E1-40B3-88B1-9A4DF83D2213}</ProjectGuid>
+    <ProjectName>bin2cpp</ProjectName>
+    <RootNamespace>bin2cpp</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Label="Configuration">
-    <CharacterSet>Unicode</CharacterSet>
-    <ConfigurationType>Utility</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <PlatformToolset>$(DefaultPlatformToolset)_xp</PlatformToolset>
+    <UseDebugLibraries Condition="'$(Configuration.Contains(Debug))'">true</UseDebugLibraries>
+    <UseDebugLibraries Condition="'$(Configuration.Contains(Devel))' or '$(Configuration.Contains(Release))'">false</UseDebugLibraries>
+    <WholeProgramOptimization Condition="'$(Configuration.Contains(Release))'">true</WholeProgramOptimization>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(SolutionDir)common\vsprops\Base.props" />
   </ImportGroup>
+  <PropertyGroup>
+    <OutDir>$(PCSX2DepDir)</OutDir>
+    <TargetName>$(ProjectName)</TargetName>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <Link>
+      <SubSystem>Console</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
   <ItemGroup>
-    <CustomBuild Include="..\..\include\wx\msw\setup.h">
-      <Message>Creating ..\..\include\wx\setup.h</Message>
-      <Command>copy "%(Identity)" "..\..\include\wx\setup.h"</Command>
-      <Outputs>..\..\include\wx\setup.h;%(Outputs)</Outputs>
-    </CustomBuild>
-    <CustomBuild Include="..\..\include\wx\msw\genrcdefs.h">
-      <Message>Creating ..\..\$(PlatformName)\wx\msw\rcdefs.h</Message>
-      <Command>cl /EP /nologo "%(Identity)" &gt; "..\..\$(PlatformName)\wx\msw\rcdefs.h"</Command>
-      <Outputs>..\..\$(PlatformName)\wx\msw\rcdefs.h;%(Outputs)</Outputs>
-      <AdditionalInputs>..\..\$(PlatformName)\wx\msw;%(AdditionalInputs)</AdditionalInputs>
-    </CustomBuild>
+    <ClCompile Include="bin2cpp.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
 </Project>

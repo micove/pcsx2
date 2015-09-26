@@ -29,7 +29,7 @@
       <BloatToDelete Include="$(MSBuildProjectDirectory)\bin\**\*.iobj"/>
       <BloatToDelete Include="$(MSBuildProjectDirectory)\bin\**\*.ipdb"/>
       <BloatToDelete Include="$(MSBuildProjectDirectory)\bin\**\*.lib"/>
-      <BloatToDelete Include="$(MSBuildProjectDirectory)\bin\**\*.pdb"/>
+      <BloatToDelete Include="$(MSBuildProjectDirectory)\bin\**\*.pdb" Exclude="$(MSBuildProjectDirectory)\bin\**\*-dbg.pdb"/>
     </ItemGroup>
     <Delete Files="@(BloatToDelete)" />
   </Target>

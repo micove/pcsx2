@@ -2,6 +2,10 @@ version: 1.0.{build}
 
 environment:
   VisualStudioVersion: 12.0
+  matrix:
+  - target_name: DebugAll
+  - target_name: DevelAll
+  - target_name: ReleaseAll
 
 branches:
   only:
@@ -15,11 +19,11 @@ install:
   - ps: Update-AppveyorBuild -Version "$env:gitrev-$env:appveyor_repo_branch-$env:appveyor_build_number"
 
 build_script:
-  - msbuild buildbot.xml /m /t:ReleaseAll
+  - msbuild buildbot.xml /m /t:%target_name%
 
 after_build:
   - type NUL > bin\portable.ini
-  - set FOLDER_NAME=pcsx2-%gitrev%-windows-x86
+  - set FOLDER_NAME=pcsx2-%gitrev%-windows-%target_name%-x86
   - rename bin %FOLDER_NAME%
   - 7z a -mx9 %FOLDER_NAME%.7z %FOLDER_NAME%
 
